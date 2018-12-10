@@ -1,3 +1,5 @@
+// TODO: This is an example only, will later be moved under example folder
+
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import GameSocket from './engine';
