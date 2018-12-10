@@ -1,3 +1,4 @@
+// TODO: This is an example only, will later be moved under example folder
 import * as WebSocket from 'ws';
 import { IncomingMessage } from 'http';
 import { getUserIdFromUrl } from './lib/user';
