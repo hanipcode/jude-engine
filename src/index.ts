@@ -27,6 +27,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 let gameInterval: NodeJS.Timer;
 
+// function roomForceStopHandler(eventType: string, room: Room) {
+//   endGameApi(room.roomId)
+// }
 function roomStartHandler(
   eventType: string,
   room: Room,

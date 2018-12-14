@@ -66,8 +66,7 @@ class GameSocket {
 
   constructor(server: http.Server) {
     this.connection = new WebSocket.Server({
-      server,
-      path: '/tocket',
+      port: 8001,
     });
     this.connection.on('connection', (currentConnection, request) => {
       let userId;
@@ -151,6 +150,11 @@ class GameSocket {
     }
     console.log('room starting');
     currentRoom.start();
+  }
+
+  stopRoom(roomId: number) {
+    const currentRoom = this.getRoomWithId(roomId);
+    currentRoom.stopRoom();
   }
 
   addCustomRoomHandler(type: string, roomId: number, handler: RoomHandlerFunc) {

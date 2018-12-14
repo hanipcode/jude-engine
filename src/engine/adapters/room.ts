@@ -32,6 +32,12 @@ export default class Room {
     this.dispatchEvent('start');
   }
 
+  private initStop() {
+    this.started = false;
+    this.turn;
+    this.dispatchEvent('stop');
+  }
+
   addMessageHandler(type: string, handler: RoomHandlerFunc) {
     this.messageHandler.push([type, handler]);
   }
@@ -157,9 +163,12 @@ export default class Room {
     });
   }
 
-  start(timer?: number, endTimerCallback?: Function) {
+  start() {
     this.initStart();
-    console.log('members');
+  }
+
+  stopRoom() {
+    this.initStop();
   }
 
   increaseTurn() {
