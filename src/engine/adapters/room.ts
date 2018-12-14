@@ -34,7 +34,7 @@ export default class Room {
 
   private initStop() {
     this.started = false;
-    this.turn;
+    this.turn = 0;
     this.dispatchEvent('stop');
   }
 

@@ -30,6 +30,40 @@ let gameInterval: NodeJS.Timer;
 // function roomForceStopHandler(eventType: string, room: Room) {
 //   endGameApi(room.roomId)
 // }
+function roomEndHandler(eventType: string, room: Room) {
+  let clock = 6000;
+  clearInterval(gameInterval);
+  let endInterval = setInterval(() => {
+    if (clock === 0) {
+      endGameApi(room.roomId).then(endGameResponse => {
+        room.broadcastMessage({
+          type: MessageType.gameEnd,
+          payload: {
+            winner: endGameResponse.winner,
+          },
+        });
+      });
+      clearInterval(endInterval);
+      return;
+    }
+    if (clock === 6000) {
+      room.broadcastMessage({
+        type: MessageType.broadcast,
+        payload: {
+          message: 'Agent end the game, game will end soon',
+        },
+      });
+    } else {
+      room.broadcastMessage({
+        type: MessageType.broadcast,
+        payload: {
+          message: `Game will end on ${clock / 1000} second`,
+        },
+      });
+    }
+    clock = clock - 1000;
+  }, 1000);
+}
 function roomStartHandler(
   eventType: string,
   room: Room,
@@ -44,7 +78,7 @@ function roomStartHandler(
     },
   });
 
-  let clock = gameTime - 30000;
+  let clock = gameTime;
   gameInterval = setInterval(() => {
     if (clock === 0) {
       endGameApi(room.roomId)
@@ -133,6 +167,9 @@ app.post('/room/start', async function(
     game.addRoomEventListener('start', roomId, (eventType, room) =>
       roomStartHandler(eventType, room, gameTime, isAutoStart)
     );
+    game.addRoomEventListener('stop', roomId, (eventType, room) =>
+      roomEndHandler(eventType, room)
+    );
 
     game.startRoom(roomId);
     return res.send({
@@ -146,10 +183,27 @@ app.post('/room/start', async function(
   }
 });
 
-app.get('/end', function(req, res) {
-  return res.send({
-    message: 'server ended',
-  });
+app.post('/room/end', async function(req, res) {
+  const { roomId } = req.body;
+  const roomDetail = await getRoomDetailApi(roomId);
+  console.log(roomDetail);
+  if (!roomId || !roomDetail.success) {
+    return res.status(404).send({
+      error: true,
+      message: 'room not found',
+    });
+  }
+  try {
+    game.stopRoom(roomId);
+    return res.send({
+      message: 'room ended',
+    });
+  } catch (error) {
+    return res.send({
+      error: true,
+      message: error.message,
+    });
+  }
 });
 
 server.listen(8000, () => {

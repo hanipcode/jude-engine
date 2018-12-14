@@ -154,6 +154,8 @@ class GameSocket {
 
   stopRoom(roomId: number) {
     const currentRoom = this.getRoomWithId(roomId);
+    if (currentRoom.started === false)
+      throw new Error('room is not started yet');
     currentRoom.stopRoom();
   }
 
