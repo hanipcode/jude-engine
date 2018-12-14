@@ -1,4 +1,5 @@
 import * as WebSocket from 'ws';
+import * as http from 'http';
 import { IncomingMessage } from 'http';
 import { getUserIdFromUrl } from './lib/user';
 import User from './adapters/user';
@@ -63,12 +64,25 @@ class GameSocket {
     });
   }
 
-  constructor() {
+  constructor(server: http.Server) {
     this.connection = new WebSocket.Server({
-      port: 8001,
+      server,
+      path: '/tocket',
     });
     this.connection.on('connection', (currentConnection, request) => {
-      const userId = getUserIdFromUrl(request.url);
+      let userId;
+      try {
+        userId = getUserIdFromUrl(request.url);
+      } catch (error) {
+        currentConnection.send(
+          JSON.stringify({
+            error: true,
+            message: error.message,
+          })
+        );
+        currentConnection.terminate();
+        return;
+      }
       const user = new User(userId, currentConnection);
       this.addMember(user);
       this.setInitialHandler(user);

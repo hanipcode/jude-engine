@@ -2,6 +2,7 @@
 
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
+import * as http from 'http';
 import fetch from 'node-fetch';
 import GameSocket from './engine';
 import Room from './engine/adapters/room';
@@ -18,6 +19,9 @@ import {
 } from './engine/messageInterface';
 
 const app: express.Application = express();
+const server: http.Server = http.createServer(app);
+const game: GameSocket = new GameSocket(server);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -104,8 +108,6 @@ async function betHandler(data: MessageData, room: Room) {
   });
 }
 
-const game: GameSocket = new GameSocket();
-
 app.post('/room/start', async function(
   req: express.Request,
   res: express.Response
@@ -147,6 +149,6 @@ app.get('/end', function(req, res) {
   });
 });
 
-app.listen(8000, () => {
+server.listen(8000, () => {
   console.log('server started on port 8000');
 });
