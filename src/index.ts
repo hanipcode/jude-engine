@@ -119,6 +119,7 @@ function roomStartHandler(
                   },
                 });
               }
+              willStartClock = willStartClock - 1000;
             }, 1000);
           } else {
             room.removeListener('start', roomStartHandler);
