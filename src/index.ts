@@ -42,6 +42,12 @@ function roomEndHandler(eventType: string, room: Room) {
             winner: endGameResponse.winner,
           },
         });
+        room.broadcastMessage({
+          type: MessageType.gameSessionFinish,
+          payload: {
+            roomId: room.roomId,
+          },
+        });
       });
       clearInterval(endInterval);
       return;
@@ -123,6 +129,12 @@ function roomStartHandler(
               willStartClock = willStartClock - 1000;
             }, 1000);
           } else {
+            room.broadcastMessage({
+              type: MessageType.gameSessionFinish,
+              payload: {
+                roomId: room.roomId,
+              },
+            });
             room.removeListener('start', roomStartHandler);
           }
         })

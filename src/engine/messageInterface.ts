@@ -12,11 +12,16 @@ export enum MessageType {
   gameStart = 'game_start',
   gameEnd = 'game_end',
   gameEndAgent = 'game_end_agent',
+  gameSessionFinish = 'game_session_finish',
 }
 
 export interface JoinPayload {
   roomId: number;
   phoneNumber: string;
+}
+
+export interface GameSessionFinshPayload {
+  roomId: number;
 }
 
 export interface RestartPayload {
