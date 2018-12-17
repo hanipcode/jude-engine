@@ -6,15 +6,21 @@ export enum MessageType {
   leave = 'leave',
   leaved = 'leaved',
   bet = 'bet',
+  restart = 'restart',
   chat = 'chat',
   broadcast = 'broadcast',
   gameStart = 'game_start',
   gameEnd = 'game_end',
+  gameEndAgent = 'game_end_agent',
 }
 
 export interface JoinPayload {
   roomId: number;
   phoneNumber: string;
+}
+
+export interface RestartPayload {
+  roomId: number;
 }
 
 export interface BetPayload {

@@ -90,8 +90,36 @@ function roomStartHandler(
             },
           });
           if (isAutoStart) {
-            room.increaseTurn();
-            roomStartHandler(eventType, room, gameTime, isAutoStart);
+            let willStartClock = 6000;
+            let willStartInterval = setInterval(() => {
+              if (willStartClock === 0) {
+                room.increaseTurn();
+                roomStartHandler(eventType, room, gameTime, isAutoStart);
+                return;
+              }
+              if (willStartClock === 6000) {
+                room.broadcastMessage({
+                  type: MessageType.restart,
+                  payload: {
+                    roomId: room.roomId,
+                  },
+                });
+                room.broadcastMessage({
+                  type: MessageType.broadcast,
+                  payload: {
+                    message: 'The game will be restarted soon',
+                  },
+                });
+              } else {
+                room.broadcastMessage({
+                  type: MessageType.broadcast,
+                  payload: {
+                    message: `The game will restart on ${willStartClock /
+                      1000} second`,
+                  },
+                });
+              }
+            }, 1000);
           } else {
             room.removeListener('start', roomStartHandler);
           }
