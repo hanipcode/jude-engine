@@ -95,6 +95,7 @@ function roomStartHandler(
               if (willStartClock === 0) {
                 room.increaseTurn();
                 roomStartHandler(eventType, room, gameTime, isAutoStart);
+                clearInterval(willStartInterval);
                 return;
               }
               if (willStartClock === 6000) {
