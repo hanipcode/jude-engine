@@ -129,7 +129,7 @@ export default class Room {
       this.broadcastMessage({
         type: 'broadcast',
         payload: {
-          message: `${newUser.id} joined the room`,
+          message: `${message.payload.phoneNumber} joined the room`,
         },
       });
     }
