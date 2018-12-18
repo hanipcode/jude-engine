@@ -78,7 +78,7 @@ function roomStartHandler(
   isAutoStart: boolean = false
 ) {
   game.addCustomRoomHandler(MessageType.bet, room.roomId, betHandler);
-  game.addCustomRoomHandler(MessageType.broadcast, room.roomId, chatHandler);
+  game.addCustomRoomHandler(MessageType.chat, room.roomId, chatHandler);
   room.broadcastMessage({
     type: MessageType.gameStart,
     payload: {
