@@ -122,6 +122,7 @@ export default class Room {
         payload: {
           userId: newUser.id,
           message: `${newUser.id} joined the room`,
+          turn: this.getTurn(),
           ...message.payload,
         },
       });
@@ -155,6 +156,10 @@ export default class Room {
     if (!isAlreadyAdded) return;
     const currentMember = this.members[memberIndex];
     return currentMember;
+  }
+
+  getTurn(): number {
+    return this.turn;
   }
 
   broadcastMessage(data: any) {
