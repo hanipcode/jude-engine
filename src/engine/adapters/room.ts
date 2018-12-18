@@ -121,9 +121,15 @@ export default class Room {
         type: 'joined',
         payload: {
           userId: newUser.id,
-          message: `${newUser.id} joined the room`,
-          turn: this.getTurn(),
+          turn: this.turn,
+          started: this.started,
           ...message.payload,
+        },
+      });
+      this.broadcastMessage({
+        type: 'broadcast',
+        payload: {
+          message: `${newUser.id} joined the room`,
         },
       });
     }

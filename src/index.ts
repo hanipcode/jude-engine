@@ -30,6 +30,7 @@ let gameInterval: NodeJS.Timer;
 // function roomForceStopHandler(eventType: string, room: Room) {
 //   endGameApi(room.roomId)
 // }
+
 function roomEndHandler(eventType: string, room: Room) {
   let clock = 6000;
   clearInterval(gameInterval);
@@ -77,6 +78,7 @@ function roomStartHandler(
   isAutoStart: boolean = false
 ) {
   game.addCustomRoomHandler(MessageType.bet, room.roomId, betHandler);
+  game.addCustomRoomHandler(MessageType.broadcast, room.roomId, chatHandler);
   room.broadcastMessage({
     type: MessageType.gameStart,
     payload: {
@@ -150,7 +152,7 @@ function roomStartHandler(
       // const endGameResponse = await endGameApi(room.roomId);
       clearInterval(gameInterval);
       game.removeCustomRoomHandler(MessageType.bet, room.roomId, betHandler);
-
+      game.removeCustomRoomHandler(MessageType.chat, room.roomId, chatHandler);
       return;
     }
     if (clock <= 5000) {
@@ -163,6 +165,14 @@ function roomStartHandler(
     }
     clock = clock - 1000;
   }, 1000);
+}
+
+async function chatHandler(data: MessageData, room: Room) {
+  const { phoneNumber, message } = data.payload;
+  room.broadcastMessage({
+    type: MessageType.broadcast,
+    message: `${phoneNumber}: ${message}`,
+  });
 }
 
 async function betHandler(data: MessageData, room: Room) {
