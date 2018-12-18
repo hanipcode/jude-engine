@@ -191,9 +191,12 @@ async function betHandler(data: MessageData, room: Room) {
 
   room.broadcastMessage({
     type: MessageType.broadcast,
-    message: `${data.payload.phoneNumber} bet ${
-      data.payload.coin
-    } on ${getShioName(data.payload.shioId)}`,
+    payload: {
+      message: `${data.payload.phoneNumber} bet ${
+        data.payload.coin
+      } on ${getShioName(data.payload.shioId)}`,
+    },
+  
   });
 }
 
