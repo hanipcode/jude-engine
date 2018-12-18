@@ -171,7 +171,9 @@ async function chatHandler(data: MessageData, room: Room) {
   const { phoneNumber, message } = data.payload;
   room.broadcastMessage({
     type: MessageType.broadcast,
-    message: `${phoneNumber}: ${message}`,
+    payload: {
+      message: `${phoneNumber}: ${message}`,
+    },
   });
 }
 
@@ -196,7 +198,6 @@ async function betHandler(data: MessageData, room: Room) {
         data.payload.coin
       } on ${getShioName(data.payload.shioId)}`,
     },
-  
   });
 }
 
