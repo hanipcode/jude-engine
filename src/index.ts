@@ -219,6 +219,7 @@ app.post('/room/start', async function(
     game.addRoomEventListener('start', roomId, (eventType, room) =>
       roomStartHandler(eventType, room, gameTime, isAutoStart)
     );
+    game.removeAllRoomEventListenerWithType('stop', roomId);
     game.addRoomEventListener('stop', roomId, (eventType, room) =>
       roomEndHandler(eventType, room)
     );
