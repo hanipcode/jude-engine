@@ -141,7 +141,6 @@ function roomStartHandler(
           }
         })
         .catch(error => {
-          console.log(`error in room ${error}`);
           if (isAutoStart) {
             room.increaseTurn();
             roomStartHandler(eventType, room, gameTime);
@@ -178,7 +177,6 @@ async function chatHandler(data: MessageData, room: Room) {
 }
 
 async function betHandler(data: MessageData, room: Room) {
-  console.log(data);
   if (!data.payload.userId) return;
   const currentUser = room.getMemberByUserId(data.payload.userId);
   if (!data.payload.phoneNumber || !data.payload.coin || !data.payload.shioId) {
@@ -207,7 +205,6 @@ app.post('/room/start', async function(
 ) {
   const { roomId } = req.body;
   const roomDetail = await getRoomDetailApi(roomId);
-  console.log(roomDetail);
   if (!roomId || !roomDetail.success) {
     return res.status(404).send({
       error: true,
@@ -243,7 +240,6 @@ app.post('/room/start', async function(
 app.post('/room/end', async function(req, res) {
   const { roomId } = req.body;
   const roomDetail = await getRoomDetailApi(roomId);
-  console.log(roomDetail);
   if (!roomId || !roomDetail.success) {
     return res.status(404).send({
       error: true,

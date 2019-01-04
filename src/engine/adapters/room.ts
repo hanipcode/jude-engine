@@ -46,12 +46,7 @@ export default class Room {
     const filteredMessageHandler = this.messageHandler.filter(
       handlerItem => handlerItem[0] !== type && handlerItem[1] !== handler
     );
-    console.log(
-      'removing message handler',
-      this.messageHandler,
-      'to',
-      filteredMessageHandler
-    );
+
     this.messageHandler = filteredMessageHandler;
   }
 
@@ -63,8 +58,6 @@ export default class Room {
       const matchedHandlers: Array<HandlerList> = this.messageHandler.filter(
         handlerItem => handlerItem[0] === data.type
       );
-      this.messageHandler.forEach(handler => console.log(handler[0]));
-      console.log(matchedHandlers.length, 'nyoh', matchedHandlers);
       matchedHandlers.forEach(handler => handler[1](data, room));
     } catch (error) {
       console.log(error);
@@ -89,7 +82,6 @@ export default class Room {
       eventItem =>
         !(eventItem[0] === eventType && eventItem[1] === callbackFunction)
     );
-    console.log(this.events, filteredEvents);
     this.events = filteredEvents;
   }
 

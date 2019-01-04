@@ -22,12 +22,10 @@ class User implements User {
     this.isAlive = true;
 
     this.connection.on('pong', () => {
-      console.log(`${this.id} is pong ing`);
       this.heartBeat();
     });
     this.pingInterval = setInterval(() => {
       if (this.isAlive === false) {
-        console.log(`${this.id} connection  is down, mayday mayday`);
         clearInterval(this.pingInterval);
         return this.connection.terminate();
       }
@@ -38,7 +36,6 @@ class User implements User {
   }
 
   heartBeat() {
-    console.log(`${this.id} is dug dug ing`);
     this.isAlive = true;
   }
 
