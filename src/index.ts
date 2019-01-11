@@ -212,12 +212,6 @@ app.post('/room/start', async function(
     });
   }
   const roomStatus = game.getRoomStatus(roomId);
-  if (roomStatus === null) {
-    return res.status(404).send({
-      error: true,
-      message: 'nyari room apaan woy, room nya ga ada',
-    });
-  }
   if (roomStatus) {
     return res.status(400).send({
       error: true,
