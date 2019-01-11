@@ -211,6 +211,19 @@ app.post('/room/start', async function(
       message: 'room not found',
     });
   }
+  const roomStatus = game.getRoomStatus(roomId);
+  if (roomStatus === null) {
+    return res.status(404).send({
+      error: true,
+      message: 'nyari room apaan woy, room nya ga ada',
+    });
+  }
+  if (roomStatus) {
+    return res.status(400).send({
+      error: true,
+      message: 'start start ndogmu, room nya udah ke start woi',
+    });
+  }
   const isAutoStart = roomDetail.success.turn_rooms === 'auto';
   try {
     const gameTime = convertMinuteToMs(roomDetail.success.game_time_rooms);
@@ -257,6 +270,28 @@ app.post('/room/end', async function(req, res) {
       message: error.message,
     });
   }
+});
+
+app.post('/room/status', async function(req, res) {
+  const { roomId } = req.body;
+  if (!roomId) {
+    return res.status(404).send({
+      error: true,
+      message: 'mana param roomId woy',
+    });
+  }
+  const roomStatus = game.getRoomStatus(roomId);
+  if (roomStatus === null) {
+    return res.status(404).send({
+      error: true,
+      message: 'nyari room apaan woy, room nya ga ada',
+    });
+  }
+  return res.status(200).send({
+    error: false,
+    started: roomStatus,
+    message: roomStatus ? 'room is started' : 'room is not started',
+  });
 });
 
 server.listen(8000, () => {

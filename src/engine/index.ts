@@ -53,8 +53,12 @@ class GameSocket {
     currentRoom.removeMember(user.id, message);
   }
 
-  private getRoomWithId(roomId: number): Room {
-    return this.roomList.filter(room => room.roomId === roomId)[0];
+  getRoomWithId(roomId: number): Room | null {
+    const filteredRoom = this.roomList.filter(room => room.roomId === roomId);
+    if (filteredRoom.length === 0) {
+      return null;
+    }
+    return filteredRoom[0];
   }
 
   private closeConnectionHandler(user: User) {
@@ -98,6 +102,14 @@ class GameSocket {
         this.removeMember(user.id);
       });
     });
+  }
+
+  getRoomStatus(roomId: number): boolean | null {
+    const selectedRoom = this.getRoomWithId(roomId);
+    if (selectedRoom === null) {
+      return null;
+    }
+    return selectedRoom.started;
   }
 
   setInitialHandler(user: User) {
