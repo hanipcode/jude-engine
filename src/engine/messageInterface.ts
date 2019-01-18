@@ -13,6 +13,7 @@ export enum MessageType {
   gameEnd = 'game_end',
   gameEndAgent = 'game_end_agent',
   gameSessionFinish = 'game_session_finish',
+  clock = 'clock',
 }
 
 export interface JoinPayload {
@@ -45,6 +46,9 @@ interface ChatPayload {
 
 interface BroadcastPayload {
   message: string;
+}
+interface ClockPayload {
+  second: number;
 }
 
 interface GameStartPayload {

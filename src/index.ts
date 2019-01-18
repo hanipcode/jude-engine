@@ -154,14 +154,13 @@ function roomStartHandler(
       game.removeCustomRoomHandler(MessageType.chat, room.roomId, chatHandler);
       return;
     }
-    if (clock <= 5000) {
-      room.broadcastMessage({
-        type: MessageType.broadcast,
-        payload: {
-          message: `game will end in ${clock / 1000} second`,
-        },
-      });
-    }
+    //Clocking
+    room.broadcastMessage({
+      type: MessageType.clock,
+      payload: {
+        second: clock / 1000,
+      },
+    });
     clock = clock - 1000;
   }, 1000);
 }
